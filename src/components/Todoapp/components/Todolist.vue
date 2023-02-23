@@ -1,7 +1,6 @@
-<template>todolists</template>
+<template>
+    lists
+</template>
 
 <script>
-export default {};
 </script>
-
-<style></style>

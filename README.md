@@ -1,1 +1,1 @@
-This is a Todo list app made with Vue.
+Todo App made using Vue.
