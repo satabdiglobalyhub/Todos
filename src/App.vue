@@ -1,14 +1,13 @@
 <template>
-  <Todo />
+  <Todoindex />
 </template>
 
 <script>
-import Todo from "./components/index.vue";
+import Todoindex from "./components/Todoapp/Todoindex.vue";
+
 export default {
   components: {
-    Todo
+    Todoindex,
   },
 };
 </script>
-
-<style></style>
