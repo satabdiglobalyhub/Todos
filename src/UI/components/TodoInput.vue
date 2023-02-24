@@ -1,12 +1,10 @@
 <template>
-  <form @submit.prevent="addNewTodo" class="form">
-    <input
-      type="text"
-      placeholder="What needs to be done?"
-      class="todo-input"
-      required
-    />
-  </form>
+  <input
+    type="text"
+    placeholder="What needs to be done?"
+    class="todo-input"
+    required
+  />
 </template>
 
 <script></script>
