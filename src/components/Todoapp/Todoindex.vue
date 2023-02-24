@@ -10,7 +10,7 @@
       <!-- did not add Todobutton here to add it in the Todolist  -->
     </div>
     <div>
-      <TodoChange />
+      <TodoChanges />
     </div>
   </div>
 </template>
@@ -19,14 +19,14 @@
 import TodoInput from "../../UI/components/TodoInput.vue";
 import TodoList from "./components/TodoList.vue";
 import TodoButton from "../../UI/components/TodoButton.vue";
-import TodoChange from "./components/Todochange.vue";
+import TodoChanges from "./components/TodoChanges.vue";
 
 export default {
   components: {
     TodoInput,
     TodoList,
     TodoButton,
-    TodoChange,
+    TodoChanges,
   },
   data() {
     return {
