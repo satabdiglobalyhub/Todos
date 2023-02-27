@@ -1,13 +1,26 @@
 <template>
   <input
     type="text"
-    placeholder="What needs to be done?"
     class="todo-input"
-    required
+    :placeholder="placeholderText"
+    :required="isrequired"
   />
 </template>
 
-<script></script>
+<script>
+export default {
+  props: {
+    placeholderText: {
+      type: String,
+      default: "Enter Todos",
+    },
+    isrequired: {
+      type: Boolean,
+      default: false,
+    },
+  },
+};
+</script>
 
 <style>
 .form {

@@ -1,9 +1,9 @@
 <template>
-  <div class="list">
+  <!-- <div class="list">
     <ul >
       <li>static todolist <TodoButton :buttonName="Delete" /></li>
     </ul>
-  </div>
+  </div> -->
 </template>
 
 <script>

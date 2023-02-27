@@ -1,16 +1,19 @@
 <template>
   <div class="container">
     <h1 class="title">todos</h1>
-    <div class="input">
-      <TodoInput class="todo-input" />
+    <form @submit.prevent="addNewTodo" class="input">
+      <TodoInput
+        class="todo-input"
+        :placeholder="placeholderText"
+        :required="isrequired"
+        name="newTodo"
+        v-model="newTodo"
+      />
       <TodoButton class="todo-button" :buttonName="Submit" />
-    </div>
-    <div>
+    </form>
+
+    <div class="todo-list">
       <TodoList />
-      <!-- did not add Todobutton here to add it in the Todolist  -->
-    </div>
-    <div>
-      <TodoChanges />
     </div>
   </div>
 </template>
@@ -19,19 +22,38 @@
 import TodoInput from "../../UI/components/TodoInput.vue";
 import TodoList from "./components/TodoList.vue";
 import TodoButton from "../../UI/components/TodoButton.vue";
-import TodoChanges from "./components/TodoChanges.vue";
 
 export default {
   components: {
     TodoInput,
     TodoList,
     TodoButton,
-    TodoChanges,
   },
   data() {
     return {
       Submit: "Submit",
+      placeholderText: "What needs to be done?",
+      isrequired: true,
+      newTodo: "",
+      todos: {},
     };
+  },
+  methods: {
+    addNewTodo() {
+      this.todos = {
+        id: Date.now(),
+        done: false,
+        content: this.newTodo,
+      };
+      this.newTodo = "";
+      this.saveData();
+      this.$emit("updatedTodoList");
+    },
+    saveData() {
+      let todosLists = JSON.parse(localStorage.getItem("todos")) || [];
+      todosLists.push(this.todos);
+      localStorage.setItem("todos", JSON.stringify(todosLists));
+    },
   },
 };
 </script>
