@@ -3,20 +3,29 @@
     type="text"
     class="todo-input"
     :placeholder="placeholderText"
-    :required="isrequired"
+    v-model="inputValue"
+    @keyup.enter="emitInputEvent"
+    required
   />
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      inputValue: "",
+    };
+  },
   props: {
     placeholderText: {
       type: String,
       default: "Enter Todos",
     },
-    isrequired: {
-      type: Boolean,
-      default: false,
+  },
+  methods: {
+    emitInputEvent() {
+      this.$emit("newTodos", this.inputValue);
+      this.inputValue = "";
     },
   },
 };

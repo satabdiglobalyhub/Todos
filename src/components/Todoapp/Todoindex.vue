@@ -1,19 +1,17 @@
 <template>
   <div class="container">
     <h1 class="title">todos</h1>
-    <form @submit.prevent="addNewTodo" class="input">
+    <div class="input">
       <TodoInput
         class="todo-input"
         :placeholder="placeholderText"
-        :required="isrequired"
-        name="newTodo"
-        v-model="newTodo"
+        @newTodos="addNewTodo"
       />
       <TodoButton class="todo-button" :buttonName="Submit" />
-    </form>
+    </div>
 
     <div class="todo-list">
-      <TodoList />
+      <TodoList :TodoList="todos" />{{ this.todos }}
     </div>
   </div>
 </template>
@@ -33,26 +31,18 @@ export default {
     return {
       Submit: "Submit",
       placeholderText: "What needs to be done?",
-      isrequired: true,
       newTodo: "",
-      todos: {},
+      todos: [],
     };
   },
   methods: {
-    addNewTodo() {
+    addNewTodo(newItem) {
       this.todos = {
         id: Date.now(),
         done: false,
-        content: this.newTodo,
+        content: newItem,
       };
-      this.newTodo = "";
-      this.saveData();
-      this.$emit("updatedTodoList");
-    },
-    saveData() {
-      let todosLists = JSON.parse(localStorage.getItem("todos")) || [];
-      todosLists.push(this.todos);
-      localStorage.setItem("todos", JSON.stringify(todosLists));
+      console.log(this.todos);
     },
   },
 };
