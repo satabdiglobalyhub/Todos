@@ -19,6 +19,9 @@
     <div>
       <Todoslist :todos="todos" />
     </div>
+    <div>
+      buttons
+    </div>
   </div>
 </template>
 
