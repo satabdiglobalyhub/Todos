@@ -4,7 +4,6 @@
     class="todo-input"
     :placeholder="placeholderText"
     v-model="inputValue"
-    @keyup.enter="emitInputEvent"
     required
   />
 </template>
@@ -23,8 +22,7 @@ export default {
     },
   },
   methods: {
-    emitInputEvent() {
-      this.$emit("newTodos", this.inputValue);
+    clearInput() {
       this.inputValue = "";
     },
   },

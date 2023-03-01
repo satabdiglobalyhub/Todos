@@ -5,44 +5,56 @@
       <TodoInput
         class="todo-input"
         :placeholder="placeholderText"
+        v-model="todo"
         @newTodos="addNewTodo"
+        @keyup.enter="addNewTodo"
+        ref="todoInput"
       />
-      <TodoButton class="todo-button" :buttonName="Submit" />
+      <TodoButton
+        class="todo-button"
+        :buttonName="Submit"
+        @click="addNewTodo"
+      />
     </div>
-
-    <div class="todo-list">
-      <TodoList :TodoList="todos" />{{ this.todos }}
+    <div>
+      <Todoslist :todos="todos" />
     </div>
   </div>
 </template>
 
 <script>
 import TodoInput from "../../UI/components/TodoInput.vue";
-import TodoList from "./components/TodoList.vue";
+import Todoslist from "./components/Todoslist.vue";
 import TodoButton from "../../UI/components/TodoButton.vue";
 
 export default {
   components: {
     TodoInput,
-    TodoList,
+    Todoslist,
     TodoButton,
   },
   data() {
     return {
       Submit: "Submit",
       placeholderText: "What needs to be done?",
-      newTodo: "",
+      todo: "",
       todos: [],
     };
   },
   methods: {
-    addNewTodo(newItem) {
-      this.todos = {
-        id: Date.now(),
-        done: false,
-        content: newItem,
-      };
-      console.log(this.todos);
+    addNewTodo() {
+      if (this.todo.length === 0) {
+        return;
+      } else {
+        this.todos.push({
+          id: Date.now(),
+          done: false,
+          content: this.todo,
+        });
+
+        this.$refs.todoInput.clearInput();
+        this.todo = "";
+      }
     },
   },
 };
@@ -70,8 +82,8 @@ export default {
 .input {
   display: flex;
   width: 100%;
-  border: 3px solid #2c3e50;
-  border-radius: 8px;
+  border: 4px solid #2c3e50;
+  border-radius: 5px;
 }
 .todo-input {
   width: 80%;
@@ -81,9 +93,10 @@ export default {
 }
 .todo-button {
   width: 20%;
-  border-left: 3px solid #2c3e50;
+  border-left: 4px solid #2c3e50;
   border-top: 0px;
   border-right: 0px;
   border-bottom: 0px;
+  border-radius: 0px;
 }
 </style>
