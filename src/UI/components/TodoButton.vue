@@ -16,12 +16,12 @@ export default {
 <style>
 button {
   font-size: 20px;
-  border: 1px solid black;
+  border: 1px solid #2c3e50;
   border-radius: 5px;
   background-color: white;
 }
 button:hover {
   color: white;
-  background-color: black;
+  background-color: #2c3e50;
 }
 </style>

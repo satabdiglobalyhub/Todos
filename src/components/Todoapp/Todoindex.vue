@@ -1,58 +1,60 @@
 <template>
   <div class="container">
     <h1 class="title">todos</h1>
-    <form @submit.prevent="addNewTodo" class="input">
+    <div class="input">
       <TodoInput
         class="todo-input"
         :placeholder="placeholderText"
-        :required="isrequired"
-        name="newTodo"
-        v-model="newTodo"
+        v-model="todo"
+        @newTodos="addNewTodo"
+        @keyup.enter="addNewTodo"
+        ref="todoInput"
       />
-      <TodoButton class="todo-button" :buttonName="Submit" />
-    </form>
-
-    <div class="todo-list">
-      <TodoList />
+      <TodoButton
+        class="todo-button"
+        :buttonName="Submit"
+        @click="addNewTodo"
+      />
+    </div>
+    <div>
+      <Todoslist :todos="todos" />
     </div>
   </div>
 </template>
 
 <script>
 import TodoInput from "../../UI/components/TodoInput.vue";
-import TodoList from "./components/TodoList.vue";
+import Todoslist from "./components/Todoslist.vue";
 import TodoButton from "../../UI/components/TodoButton.vue";
 
 export default {
   components: {
     TodoInput,
-    TodoList,
+    Todoslist,
     TodoButton,
   },
   data() {
     return {
       Submit: "Submit",
       placeholderText: "What needs to be done?",
-      isrequired: true,
-      newTodo: "",
-      todos: {},
+      todo: "",
+      todos: [],
     };
   },
   methods: {
     addNewTodo() {
-      this.todos = {
-        id: Date.now(),
-        done: false,
-        content: this.newTodo,
-      };
-      this.newTodo = "";
-      this.saveData();
-      this.$emit("updatedTodoList");
-    },
-    saveData() {
-      let todosLists = JSON.parse(localStorage.getItem("todos")) || [];
-      todosLists.push(this.todos);
-      localStorage.setItem("todos", JSON.stringify(todosLists));
+      if (this.todo.length === 0) {
+        return;
+      } else {
+        this.todos.push({
+          id: Date.now(),
+          done: false,
+          content: this.todo,
+        });
+
+        this.$refs.todoInput.clearInput();
+        this.todo = "";
+      }
     },
   },
 };
@@ -80,8 +82,8 @@ export default {
 .input {
   display: flex;
   width: 100%;
-  border: 3px solid #2c3e50;
-  border-radius: 8px;
+  border: 4px solid #2c3e50;
+  border-radius: 5px;
 }
 .todo-input {
   width: 80%;
@@ -91,9 +93,10 @@ export default {
 }
 .todo-button {
   width: 20%;
-  border-left: 3px solid #2c3e50;
+  border-left: 4px solid #2c3e50;
   border-top: 0px;
   border-right: 0px;
   border-bottom: 0px;
+  border-radius: 0px;
 }
 </style>
