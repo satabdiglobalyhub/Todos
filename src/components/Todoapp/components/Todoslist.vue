@@ -14,6 +14,9 @@
       </h3>
     </div>
   </div>
+  <div v-else class="emptyList">
+    <h3>Enter Todos</h3>
+  </div>
 </template>
 
 <script>
@@ -73,5 +76,8 @@ export default {
 .completed {
   color: #2c3e50;
   text-decoration: line-through;
+}
+.emptyList {
+  color: #2c3e50;
 }
 </style>
