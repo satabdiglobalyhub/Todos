@@ -7,10 +7,10 @@
           :checked="todo.done"
           @click="todoCompleted(todo)"
         />
-        <label :class="{ completed: todo.done }">
+        <label :class="{ completed: todo.done }" @dblclick="editTodo(todo)">
           {{ todo.content }}
         </label>
-        <TodoButton :buttonName="Delete" @buttonClicked="deleteTodo(index)" />
+        <TodoButton :buttonName="Delete" @Click="deleteTodo(index)" />
       </h3>
     </div>
   </div>
@@ -39,6 +39,12 @@ export default {
   methods: {
     todoCompleted(todo) {
       todo.done = !todo.done;
+    },
+    editTodo(todo) {
+      const newContent = prompt("Enter new content", todo.content);
+      if (newContent !== null && newContent !== "") {
+        todo.content = newContent;
+      }
     },
     deleteTodo(index) {
       this.todos.splice(index, 1);

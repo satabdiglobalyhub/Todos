@@ -1,5 +1,5 @@
 <template>
-  <button @click="emitValue">{{ buttonName }}</button>
+  <button>{{ buttonName }}</button>
 </template>
 
 <script>
@@ -10,11 +10,6 @@ export default {
       default: "",
     },
   },
-  methods:{
-    emitValue(){
-      this.$emit('buttonClicked')
-    }
-  }
 };
 </script>
 
