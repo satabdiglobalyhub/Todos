@@ -10,7 +10,7 @@
         <label :class="{ completed: todo.done }" @dblclick="editTodo(todo)">
           {{ todo.content }}
         </label>
-        <TodoButton :buttonName="Delete" @Click="deleteTodo(index)" />
+        <TodoButton :buttonName="'Delete'" @Click="deleteTodo(index)" />
       </h3>
     </div>
   </div>
@@ -33,11 +33,6 @@ export default {
       type: Array,
       dafault: [],
     },
-  },
-  data() {
-    return {
-      Delete: "Delete",
-    };
   },
   methods: {
     todoCompleted(todo) {
@@ -78,6 +73,8 @@ export default {
   text-decoration: line-through;
 }
 .emptyList {
+  display: flex;
+  justify-content: center;
   color: #2c3e50;
 }
 </style>

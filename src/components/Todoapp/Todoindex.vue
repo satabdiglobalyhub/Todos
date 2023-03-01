@@ -4,20 +4,40 @@
     <div class="input">
       <TodoInput
         class="todo-input"
-        :placeholder="placeholderText"
+        :placeholderText="'What needs to be done?'"
         v-model="todo"
         @newTodos="addNewTodo"
         @keyup.enter="addNewTodo"
         ref="todoInput"
       />
       <TodoButton
-        class="todo-button"
-        :buttonName="Submit"
+        class="todo-input-button"
+        :buttonName="'Submit'"
         @click="addNewTodo"
       />
     </div>
+
     <div>
       <Todoslist :todos="todos" />
+    </div>
+
+    <div v-if="todos.length > 1" class="todo-buttons">
+      <div class="todo-buttons-changes">
+        <TodoButton
+          :buttonName="'Mark All Completed'"
+          @click="markAllCompleted"
+        />
+        <TodoButton :buttonName="'Delete All'" @click="deleteAll" />
+        <TodoButton
+          :buttonName="'Clear Completed'"
+          @click="clearAllCompleted"
+        />
+      </div>
+      <div class="todo-buttons-display">
+        <TodoButton :buttonName="'Show All'" @click="showAll" />
+        <TodoButton :buttonName="'Show Active'" @click="showActive" />
+        <TodoButton :buttonName="'Show Completed'" @click="showCompleted" />
+      </div>
     </div>
   </div>
 </template>
@@ -35,10 +55,9 @@ export default {
   },
   data() {
     return {
-      Submit: "Submit",
-      placeholderText: "What needs to be done?",
       todo: "",
       todos: [],
+      filteredTodos: [],
     };
   },
   methods: {
@@ -55,6 +74,33 @@ export default {
         this.$refs.todoInput.clearInput();
         this.todo = "";
       }
+    },
+    markAllCompleted() {
+      const allDone = this.todos.every((todos) => todos.done);
+      this.todos.forEach((todos) => {
+        todos.done = !allDone;
+      });
+    },
+    deleteAll() {
+      this.todos = [];
+    },
+    clearAllCompleted() {
+      for (let i = this.todos.length - 1; i >= 0; i--) {
+        if (this.todos[i].done == true) {
+          this.todos.splice(i, 1);
+        }
+      }
+    },
+    showAll() {
+      console.log("all", this.todos);
+    },
+    showActive() {
+      const activeTodos = this.todos.filter((todo) => !todo.done);
+      console.log("active", activeTodos);
+    },
+    showCompleted() {
+      const completedTodos = this.todos.filter((todo) => todo.done);
+      console.log("completed", completedTodos);
     },
   },
 };
@@ -91,12 +137,26 @@ export default {
   font-size: 18px;
   border: none;
 }
-.todo-button {
-  width: 20%;
+.todo-input-button {
+  width: 22%;
   border-left: 4px solid #2c3e50;
   border-top: 0px;
   border-right: 0px;
   border-bottom: 0px;
   border-radius: 0px;
+}
+.todo-buttons {
+  padding: 20px;
+}
+.todo-buttons-changes {
+  display: flex;
+  justify-content: space-between;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+.todo-buttons-display {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
 }
 </style>

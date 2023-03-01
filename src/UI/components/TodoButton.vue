@@ -16,7 +16,7 @@ export default {
 <style>
 button {
   font-size: 20px;
-  border: 1px solid #2c3e50;
+  border: 2px solid #2c3e50;
   border-radius: 5px;
   background-color: white;
 }
