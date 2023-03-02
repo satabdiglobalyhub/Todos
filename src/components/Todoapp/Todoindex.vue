@@ -32,10 +32,32 @@
           @click="clearAllCompleted"
         />
       </div>
+
       <div class="todo-buttons-display">
-        <TodoButton :buttonName="'Show All'" @click="showAll" />
-        <TodoButton :buttonName="'Show Active'" @click="showActive" />
-        <TodoButton :buttonName="'Show Completed'" @click="showCompleted" />
+        <TodoButton
+          :buttonName="'Show All'"
+          @click="
+            showAll();
+            filter = 'all';
+          "
+          :class="{ active: filter == 'all' }"
+        />
+        <TodoButton
+          :buttonName="'Show Active'"
+          @click="
+            showActive();
+            filter = 'active';
+          "
+          :class="{ active: filter == 'active' }"
+        />
+        <TodoButton
+          :buttonName="'Show Completed'"
+          @click="
+            showCompleted();
+            filter = 'completed';
+          "
+          :class="{ active: filter == 'completed' }"
+        />
       </div>
     </div>
   </div>
@@ -105,7 +127,7 @@ export default {
       this.todos = JSON.parse(showActive);
       const activetodos = this.todos.filter((todo) => !todo.done);
       if (activetodos.length == 0) {
-        return;
+        window.alert("NO ACTIVE TODOS");
       } else {
         this.todos = activetodos;
       }
@@ -115,7 +137,7 @@ export default {
       this.todos = JSON.parse(showCompleted);
       const completedtodos = this.todos.filter((todo) => todo.done);
       if (completedtodos.length == 0) {
-        return;
+        window.alert("NO COMPLETED TODOS");
       } else {
         this.todos = completedtodos;
       }
@@ -172,5 +194,9 @@ export default {
   padding: 10px 20px;
   display: flex;
   gap: 10px;
+}
+.active {
+  color: white;
+  background-color: #2c3e50;
 }
 </style>
