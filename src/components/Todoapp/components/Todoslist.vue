@@ -65,6 +65,14 @@ export default {
   flex-direction: column;
   margin: 0px 20px;
 }
+.emptyList {
+  padding: 10px;
+  border-bottom: 3px solid #2c3e50;
+  font-size: xx-large;
+  display: flex;
+  margin: 0px 20px;
+  justify-content: center;
+}
 .todo {
   display: flex;
   justify-content: flex-start;
