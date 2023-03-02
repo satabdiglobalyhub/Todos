@@ -21,7 +21,7 @@
     </div>
 
     <div v-if="todos.length > 0" class="todo-buttons">
-      <div class="todo-buttons-changes">
+      <div v-if="todos.length > 1" class="todo-buttons-changes">
         <TodoButton
           :buttonName="'Mark All Completed'"
           @click="markAllCompleted"
