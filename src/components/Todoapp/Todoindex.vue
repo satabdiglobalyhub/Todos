@@ -59,6 +59,9 @@ export default {
     };
   },
   methods: {
+    saveTodos() {
+      localStorage.setItem("todos", JSON.stringify(this.todos));
+    },
     addNewTodo() {
       if (this.todo.length === 0) {
         return;
@@ -68,7 +71,7 @@ export default {
           done: false,
           content: this.todo,
         });
-
+        this.saveTodos();
         this.$refs.todoInput.clearInput();
         this.todo = "";
       }
@@ -77,28 +80,45 @@ export default {
       const allDone = this.todos.every((todos) => todos.done);
       this.todos.forEach((todos) => {
         todos.done = !allDone;
+        this.saveTodos();
       });
     },
     deleteAll() {
       this.todos = [];
+      this.saveTodos();
     },
     clearAllCompleted() {
       for (let i = this.todos.length - 1; i >= 0; i--) {
         if (this.todos[i].done == true) {
           this.todos.splice(i, 1);
+          this.saveTodos();
         }
       }
     },
+
     showAll() {
-      this.todos = this.todos;
+      const showAll = localStorage.getItem("todos");
+      this.todos = JSON.parse(showAll);
     },
     showActive() {
-      const activeTodos = this.todos.filter((todo) => !todo.done);
-      this.todos = activeTodos;
+      const showActive = localStorage.getItem("todos");
+      this.todos = JSON.parse(showActive);
+      const activetodos = this.todos.filter((todo) => !todo.done);
+      if (activetodos.length == 0) {
+        return;
+      } else {
+        this.todos = activetodos;
+      }
     },
     showCompleted() {
-      const completedTodos = this.todos.filter((todo) => todo.done);
-      this.todos = completedTodos;
+      const showCompleted = localStorage.getItem("todos");
+      this.todos = JSON.parse(showCompleted);
+      const completedtodos = this.todos.filter((todo) => todo.done);
+      if (completedtodos.length == 0) {
+        return;
+      } else {
+        this.todos = completedtodos;
+      }
     },
   },
 };

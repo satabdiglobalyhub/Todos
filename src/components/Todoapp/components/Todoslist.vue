@@ -10,7 +10,7 @@
         <label :class="{ completed: todo.done }" @dblclick="editTodo(todo)">
           {{ todo.content }}
         </label>
-        <TodoButton :buttonName="Delete" @Click="deleteTodo(index)" />
+        <TodoButton :buttonName="'Delete'" @Click="deleteTodo(index)" />
       </h3>
     </div>
   </div>
@@ -34,23 +34,24 @@ export default {
       dafault: [],
     },
   },
-  data() {
-    return {
-      Delete: "Delete",
-    };
-  },
   methods: {
+    saveTodos() {
+      localStorage.setItem("todos", JSON.stringify(this.todos));
+    },
     todoCompleted(todo) {
       todo.done = !todo.done;
+      this.saveTodos();
     },
     editTodo(todo) {
       const newContent = prompt("Enter new content", todo.content);
       if (newContent !== null && newContent !== "") {
         todo.content = newContent;
+        this.saveTodos();
       }
     },
     deleteTodo(index) {
       this.todos.splice(index, 1);
+      this.saveTodos();
     },
   },
 };
@@ -82,7 +83,7 @@ export default {
   margin-right: 15px;
 }
 .completed {
-  color: #2c3e50;
+  color: #949494;
   text-decoration: line-through;
 }
 .emptyList {
