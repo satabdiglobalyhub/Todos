@@ -20,44 +20,21 @@
       <Todoslist :todos="todos" />
     </div>
 
-    <div v-if="todos.length > 0" class="todo-buttons">
+    <div v-if="todos.length > 0">
       <div v-if="todos.length > 1" class="todo-buttons-changes">
         <TodoButton
           :buttonName="'Mark All Completed'"
-          @click="markAllCompleted"
+          @handle-click="markAllCompleted"
         />
-        <TodoButton :buttonName="'Delete All'" @click="deleteAll" />
+        <TodoButton :buttonName="'Delete All'" @handle-click="deleteAll" />
         <TodoButton
           :buttonName="'Clear Completed'"
-          @click="clearAllCompleted"
+          @handle-click="clearAllCompleted"
         />
       </div>
 
       <div class="todo-buttons-display">
-        <TodoButton
-          :buttonName="'Show All'"
-          @click="
-            showAll();
-            filter = 'all';
-          "
-          :class="{ active: filter == 'all' }"
-        />
-        <TodoButton
-          :buttonName="'Show Active'"
-          @click="
-            showActive();
-            filter = 'active';
-          "
-          :class="{ active: filter == 'active' }"
-        />
-        <TodoButton
-          :buttonName="'Show Completed'"
-          @click="
-            showCompleted();
-            filter = 'completed';
-          "
-          :class="{ active: filter == 'completed' }"
-        />
+        <TodoButton :buttonName="i.name" v-for="i in action" />
       </div>
     </div>
   </div>
@@ -78,6 +55,23 @@ export default {
     return {
       todo: "",
       todos: [],
+      action: [
+        {
+          id: 1,
+          type: "showAll",
+          name: "Show All",
+        },
+        {
+          id: 2,
+          type: "showActive",
+          name: "show Active",
+        },
+        {
+          id: 3,
+          type: "showCompleted",
+          name: "show Completed",
+        },
+      ],
     };
   },
   methods: {
@@ -186,17 +180,13 @@ export default {
   border-radius: 0px;
 }
 .todo-buttons-changes {
-  padding: 10px 20px;
+  padding: 10px 0px;
   display: flex;
   justify-content: space-between;
 }
 .todo-buttons-display {
-  padding: 10px 20px;
+  padding: 10px 0px;
   display: flex;
-  gap: 10px;
-}
-.active {
-  color: white;
-  background-color: #2c3e50;
+  gap: 20px;
 }
 </style>

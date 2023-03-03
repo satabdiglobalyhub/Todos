@@ -2,20 +2,29 @@
   <div v-if="todos.length" class="list">
     <div v-for="(todo, index) in todos" :key="index">
       <h3 :class="{ done: todo.done }" class="todo">
-        <input
-          type="checkbox"
-          :checked="todo.done"
-          @click="todoCompleted(todo)"
-        />
-        <label :class="{ completed: todo.done }" @dblclick="editTodo(todo)">
-          {{ todo.content }}
-        </label>
-        <TodoButton :buttonName="'Delete'" @Click="deleteTodo(index)" />
+        <div>
+          <input
+            type="checkbox"
+            
+            :checked="todo.done"
+            @click="todoCompleted(todo)"
+          />
+          <label :class="{ completed: todo.done }" @dblclick="editTodo(todo)">
+            {{ todo.content }}
+          </label>
+        </div>
+        <div>
+          <TodoButton
+            :buttonName="'Delete'"
+            @Click="deleteTodo(index)"
+            class="todolist-button"
+          />
+        </div>
       </h3>
     </div>
   </div>
   <div v-else class="emptyList">
-    <h3>Enter Todos</h3>
+    <h2>Enter Todos</h2>
   </div>
 </template>
 
@@ -58,25 +67,30 @@ export default {
 </script>
 
 <style>
+h3 {
+  margin: 25px;
+}
 .list {
-  padding: 10px;
+  padding: 0px 10px;
   border-bottom: 3px solid #2c3e50;
   font-size: xx-large;
   display: flex;
   flex-direction: column;
-  margin: 0px 20px;
+  overflow: scroll;
+  height: 50vh;
 }
 .emptyList {
-  padding: 10px;
+  padding: 0px 20px;
   border-bottom: 3px solid #2c3e50;
   font-size: xx-large;
   display: flex;
-  margin: 0px 20px;
   justify-content: center;
+  margin: 30px 0px;
 }
 .todo {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: baseline;
 }
 .todo input,
 .todo label {
@@ -88,5 +102,9 @@ export default {
 }
 .emptyList {
   color: #2c3e50;
+}
+.todolist-button {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
