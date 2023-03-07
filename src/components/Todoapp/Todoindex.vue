@@ -34,7 +34,9 @@
       </div>
 
       <div class="todo-buttons-display">
-        <TodoButton :buttonName="i.name" v-for="i in action" />
+        <TodoButton :buttonName="'Show All'" @click="showAll" />
+        <TodoButton :buttonName="'Show Active'" @click="showActive" />
+        <TodoButton :buttonName="'Show Completed'" @click="showCompleted" />
       </div>
     </div>
   </div>
@@ -55,23 +57,6 @@ export default {
     return {
       todo: "",
       todos: [],
-      action: [
-        {
-          id: 1,
-          type: "showAll",
-          name: "Show All",
-        },
-        {
-          id: 2,
-          type: "showActive",
-          name: "show Active",
-        },
-        {
-          id: 3,
-          type: "showCompleted",
-          name: "show Completed",
-        },
-      ],
     };
   },
   methods: {
@@ -164,6 +149,7 @@ export default {
   width: 100%;
   border: 4px solid #2c3e50;
   border-radius: 5px;
+  margin-bottom: 5px;
 }
 .todo-input {
   width: 80%;
