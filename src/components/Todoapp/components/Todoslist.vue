@@ -1,13 +1,13 @@
 <template>
-  <div v-if="todos.length" class="list">
-    <div v-for="(todo, index) in todos" :key="index">
+  <div v-if="reversedTodos.length" class="list">
+    <div v-for="(todo, index) in reversedTodos" :key="index">
       <h3 :class="{ done: todo.done }" class="todo">
-        <div>
+        <div class="todo-list">
           <input
             type="checkbox"
-            
             :checked="todo.done"
             @click="todoCompleted(todo)"
+            class="toggle"
           />
           <label :class="{ completed: todo.done }" @dblclick="editTodo(todo)">
             {{ todo.content }}
@@ -59,8 +59,14 @@ export default {
       }
     },
     deleteTodo(index) {
-      this.todos.splice(index, 1);
+      this.todos.reverse().splice(index, 1);
       this.saveTodos();
+    },
+  },
+  //error in my logic- reverses todos everytime i delete a single todo
+  computed: {
+    reversedTodos() {
+      return this.todos.slice().reverse();
     },
   },
 };
@@ -77,7 +83,9 @@ h3 {
   display: flex;
   flex-direction: column;
   overflow: scroll;
-  height: 50vh;
+  max-height: 50vh;
+  scrollbar-width: thin;
+  scrollbar-color: #2c3e50;
 }
 .emptyList {
   padding: 0px 20px;
@@ -90,11 +98,21 @@ h3 {
 .todo {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  overflow: scroll;
 }
-.todo input,
-.todo label {
+.todo-list {
+  display: flex;
+}
+.toggle {
   margin-right: 15px;
+}
+.todo-list label {
+  overflow: scroll;
+  max-width: 350px;
+  white-space: nowrap;
+  margin-right: 15px;
+  cursor: pointer;
 }
 .completed {
   color: #949494;
@@ -106,5 +124,17 @@ h3 {
 .todolist-button {
   display: flex;
   justify-content: flex-end;
+}
+
+.list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #2c3e50;
+  border-radius: 12px;
+}
+.toggle {
+  cursor: pointer;
 }
 </style>
