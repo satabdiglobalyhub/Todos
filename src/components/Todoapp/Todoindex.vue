@@ -13,6 +13,7 @@
       <TodoButton
         class="todo-input-button"
         :buttonName="'Submit'"
+        :buttonHoverColor="'green'"
         @click="addNewTodo"
       />
     </div>
@@ -24,19 +25,37 @@
       <div v-if="todos.length > 1" class="todo-buttons-changes">
         <TodoButton
           :buttonName="'Mark All Completed'"
+          :buttonHoverColor="'green'"
           @handle-click="markAllCompleted"
         />
-        <TodoButton :buttonName="'Delete All'" @handle-click="deleteAll" />
+        <TodoButton
+          :buttonName="'Delete All'"
+          :buttonHoverColor="'red'"
+          @handle-click="deleteAll"
+        />
         <TodoButton
           :buttonName="'Clear Completed'"
+          :buttonHoverColor="'orange'"
           @handle-click="clearAllCompleted"
         />
       </div>
 
       <div class="todo-buttons-display">
-        <TodoButton :buttonName="'Show All'" @click="showAll" />
-        <TodoButton :buttonName="'Show Active'" @click="showActive" />
-        <TodoButton :buttonName="'Show Completed'" @click="showCompleted" />
+        <TodoButton
+          :buttonName="'Show All'"
+          :buttonHoverColor="'blue'"
+          @click="showAll"
+        />
+        <TodoButton
+          :buttonName="'Show Active'"
+          :buttonHoverColor="'blue'"
+          @click="showActive"
+        />
+        <TodoButton
+          :buttonName="'Show Completed'"
+          :buttonHoverColor="'blue'"
+          @click="showCompleted"
+        />
       </div>
     </div>
   </div>

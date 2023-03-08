@@ -16,7 +16,8 @@
         <div>
           <TodoButton
             :buttonName="'Delete'"
-            @Click="deleteTodo(index)"
+            :buttonHoverColor="'red'"
+            @Click="deleteTodo(todo.id)"
             class="todolist-button"
           />
         </div>
@@ -58,12 +59,14 @@ export default {
         this.saveTodos();
       }
     },
-    deleteTodo(index) {
-      this.todos.reverse().splice(index, 1);
-      this.saveTodos();
+    deleteTodo(id) {
+      const index = this.todos.findIndex((todo) => todo.id === id);
+      if (index !== -1) {
+        this.todos.splice(index, 1);
+        this.saveTodos();
+      }
     },
   },
-  //error in my logic- reverses todos everytime i delete a single todo
   computed: {
     reversedTodos() {
       return this.todos.slice().reverse();
@@ -77,9 +80,9 @@ h3 {
   margin: 25px;
 }
 .list {
-  padding: 0px 10px;
+  /* padding: 0px 10px; */
   border-bottom: 3px solid #2c3e50;
-  font-size: xx-large;
+  font-size: x-large;
   display: flex;
   flex-direction: column;
   overflow: scroll;
@@ -98,21 +101,27 @@ h3 {
 .todo {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   overflow: scroll;
 }
 .todo-list {
   display: flex;
+  align-items: flex-start;
 }
 .toggle {
   margin-right: 15px;
 }
+.todo-list input {
+  margin-top: 15px;
+}
 .todo-list label {
-  overflow: scroll;
-  max-width: 350px;
-  white-space: nowrap;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 385px;
   margin-right: 15px;
   cursor: pointer;
+  word-break: break-all;
+  padding: 5px;
 }
 .completed {
   color: #949494;
