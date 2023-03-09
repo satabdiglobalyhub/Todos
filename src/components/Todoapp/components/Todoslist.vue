@@ -1,7 +1,15 @@
 <template>
   <div v-if="reversedTodos.length" class="list">
     <div v-for="(todo, index) in reversedTodos" :key="index">
-      <h3 :class="{ done: todo.done }" class="todo">
+      <h3
+        v-if="
+          displayState === 'ALL' ||
+          (displayState === 'ACTIVE' && !todo.done) ||
+          (displayState === 'COMPLETED' && todo.done)
+        "
+        :class="{ done: todo.done }"
+        class="todo"
+      >
         <div class="todo-list">
           <input
             type="checkbox"
@@ -24,7 +32,19 @@
       </h3>
     </div>
   </div>
-  <div v-else class="emptyList">
+  <h3
+    v-if="displayState === 'ACTIVE' && activeTodos.length === 0"
+    class="emptyList"
+  >
+    <h2>NO ACTIVE TODOS</h2>
+  </h3>
+  <h3
+    v-if="displayState === 'COMPLETED' && completedTodos.length === 0"
+    class="emptyList"
+  >
+    <h2>NO COMPLETED TODOS</h2>
+  </h3>
+  <div v-if="reversedTodos.length == 0" class="emptyList">
     <h2>Enter Todos</h2>
   </div>
 </template>
@@ -47,6 +67,10 @@ export default {
     todos: {
       type: Array,
       dafault: [],
+    },
+    displayState: {
+      type: String,
+      default: "ALL",
     },
   },
   methods: {
@@ -75,6 +99,12 @@ export default {
   computed: {
     reversedTodos() {
       return this.todos.slice().reverse();
+    },
+    activeTodos() {
+      return this.reversedTodos.filter((todo) => !todo.done);
+    },
+    completedTodos() {
+      return this.reversedTodos.filter((todo) => todo.done);
     },
   },
   mounted() {

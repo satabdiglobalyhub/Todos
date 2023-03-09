@@ -16,15 +16,6 @@ export default {
       default: "",
     },
   },
-
-  methods: {
-    toggleButton() {
-      this.$emit("handle-click");
-      if (this.focusActive) {
-        this.isActive = !this.isActive;
-      }
-    },
-  },
 };
 </script>
 
@@ -44,13 +35,13 @@ button {
   color: #2c3e50;
   background-color: #ff605c;
 }
-.orange:hover{
-  color:#2c3e50;
+.orange:hover {
+  color: #2c3e50;
   background-color: #ffbd44;
 }
-.blue:hover{
-color:#2c3e50;
-background-color: #2a75ff;
+.blue:hover {
+  color: #2c3e50;
+  background-color: #2a75ff;
 }
 button:hover {
   color: white;

@@ -18,7 +18,7 @@
       />
     </div>
     <div>
-      <Todoslist :todos="displayTodos" />
+      <Todoslist :todos="todos" :displayState="displayState" />
     </div>
 
     <div v-if="todos.length > 0">
@@ -26,17 +26,17 @@
         <TodoButton
           :buttonName="'Mark All Completed'"
           :buttonHoverColor="'green'"
-          @handle-click="markAllCompleted"
+          @click="markAllCompleted"
         />
         <TodoButton
           :buttonName="'Delete All'"
           :buttonHoverColor="'red'"
-          @handle-click="deleteAll"
+          @click="deleteAll"
         />
         <TodoButton
           :buttonName="'Clear Completed'"
           :buttonHoverColor="'orange'"
-          @handle-click="clearAllCompleted"
+          @click="clearAllCompleted"
         />
       </div>
 
@@ -76,12 +76,13 @@ export default {
     return {
       todo: "",
       todos: [],
-      displayTodos: [],
+      displayState: "ALL",
     };
   },
   methods: {
     saveTodos() {
       localStorage.setItem("todos", JSON.stringify(this.todos));
+      this.displayState = "ALL";
     },
     addNewTodo() {
       if (this.todo.length === 0) {
@@ -94,70 +95,48 @@ export default {
         };
         this.todos.push(addedTodo);
         this.saveTodos();
-        this.displayTodos.push(addedTodo);
+
         this.$refs.todoInput.clearInput();
         this.todo = "";
       }
     },
     markAllCompleted() {
+      this.displayState = "ALL";
+
       const allDone = this.todos.every((todos) => todos.done);
       this.todos.forEach((todos) => {
         todos.done = !allDone;
         this.saveTodos();
       });
-      const displayallDone = this.displayTodos.every((todos) => todos.done);
-      this.displayTodos.forEach((todos) => {
-        todos.done = !allDone;
-      });
     },
     deleteAll() {
       this.todos = [];
-      this.displayTodos = [];
       this.saveTodos();
     },
     clearAllCompleted() {
+      this.displayState = "ALL";
+
       for (let i = this.todos.length - 1; i >= 0; i--) {
         if (this.todos[i].done == true) {
           this.todos.splice(i, 1);
           this.saveTodos();
         }
       }
-      for (let i = this.displayTodos.length - 1; i >= 0; i--) {
-        if (this.displayTodos[i].done == true) {
-          this.displayTodos.splice(i, 1);
-        }
-      }
     },
 
     showAll() {
-      const showAll = localStorage.getItem("todos");
-      this.displayTodos = JSON.parse(showAll);
+      this.displayState = "ALL";
     },
     showActive() {
-      const showActive = localStorage.getItem("todos");
-      this.todos = JSON.parse(showActive);
-      const activetodos = this.todos.filter((todo) => !todo.done);
-      if (activetodos.length == 0) {
-        window.alert("NO ACTIVE TODOS");
-      } else {
-        this.displayTodos = activetodos;
-      }
+      this.displayState = "ACTIVE";
     },
     showCompleted() {
-      const showCompleted = localStorage.getItem("todos");
-      this.todos = JSON.parse(showCompleted);
-      const completedtodos = this.todos.filter((todo) => todo.done);
-      if (completedtodos.length == 0) {
-        window.alert("NO COMPLETED TODOS");
-      } else {
-        this.displayTodos = completedtodos;
-      }
+      this.displayState = "COMPLETED";
     },
   },
   mounted() {
     const savedTodos = localStorage.getItem("todos");
     if (savedTodos) {
-      this.displayTodos = JSON.parse(savedTodos);
       this.todos = JSON.parse(savedTodos);
     }
   },
