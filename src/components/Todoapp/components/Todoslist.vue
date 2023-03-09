@@ -1,7 +1,15 @@
 <template>
   <div v-if="reversedTodos.length" class="list">
     <div v-for="(todo, index) in reversedTodos" :key="index">
-      <h3 :class="{ done: todo.done }" class="todo">
+      <h3
+        v-if="
+          displayState === 'ALL' ||
+          (displayState === 'ACTIVE' && !todo.done) ||
+          (displayState === 'COMPLETED' && todo.done)
+        "
+        :class="{ done: todo.done }"
+        class="todo"
+      >
         <div class="todo-list">
           <input
             type="checkbox"
@@ -16,14 +24,27 @@
         <div>
           <TodoButton
             :buttonName="'Delete'"
-            @Click="deleteTodo(index)"
+            :buttonHoverColor="'red'"
+            @Click="deleteTodo(todo.id)"
             class="todolist-button"
           />
         </div>
       </h3>
     </div>
   </div>
-  <div v-else class="emptyList">
+  <h3
+    v-if="displayState === 'ACTIVE' && activeTodos.length === 0"
+    class="emptyList"
+  >
+    <h2>NO ACTIVE TODOS</h2>
+  </h3>
+  <h3
+    v-if="displayState === 'COMPLETED' && completedTodos.length === 0"
+    class="emptyList"
+  >
+    <h2>NO COMPLETED TODOS</h2>
+  </h3>
+  <div v-if="reversedTodos.length == 0" class="emptyList">
     <h2>Enter Todos</h2>
   </div>
 </template>
@@ -33,6 +54,11 @@ import TodoButton from "../../../UI/components/TodoButton.vue";
 import TodoInput from "../../../UI/components/TodoInput.vue";
 
 export default {
+  data() {
+    return {
+      displayTodos: [],
+    };
+  },
   components: {
     TodoButton,
     TodoInput,
@@ -41,6 +67,10 @@ export default {
     todos: {
       type: Array,
       dafault: [],
+    },
+    displayState: {
+      type: String,
+      default: "ALL",
     },
   },
   methods: {
@@ -58,16 +88,27 @@ export default {
         this.saveTodos();
       }
     },
-    deleteTodo(index) {
-      this.todos.reverse().splice(index, 1);
-      this.saveTodos();
+    deleteTodo(id) {
+      const index = this.todos.findIndex((todo) => todo.id === id);
+      if (index !== -1) {
+        this.todos.splice(index, 1);
+        this.saveTodos();
+      }
     },
   },
-  //error in my logic- reverses todos everytime i delete a single todo
   computed: {
     reversedTodos() {
       return this.todos.slice().reverse();
     },
+    activeTodos() {
+      return this.reversedTodos.filter((todo) => !todo.done);
+    },
+    completedTodos() {
+      return this.reversedTodos.filter((todo) => todo.done);
+    },
+  },
+  mounted() {
+    this.displayTodos = JSON.parse(localStorage.getItem("todos"));
   },
 };
 </script>
@@ -77,9 +118,9 @@ h3 {
   margin: 25px;
 }
 .list {
-  padding: 0px 10px;
+  /* padding: 0px 10px; */
   border-bottom: 3px solid #2c3e50;
-  font-size: xx-large;
+  font-size: x-large;
   display: flex;
   flex-direction: column;
   overflow: scroll;
@@ -98,21 +139,27 @@ h3 {
 .todo {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   overflow: scroll;
 }
 .todo-list {
   display: flex;
+  align-items: flex-start;
 }
 .toggle {
   margin-right: 15px;
 }
+.todo-list input {
+  margin-top: 15px;
+}
 .todo-list label {
-  overflow: scroll;
-  max-width: 350px;
-  white-space: nowrap;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 385px;
   margin-right: 15px;
   cursor: pointer;
+  word-break: break-all;
+  padding: 5px;
 }
 .completed {
   color: #949494;

@@ -13,30 +13,49 @@
       <TodoButton
         class="todo-input-button"
         :buttonName="'Submit'"
+        :buttonHoverColor="'green'"
         @click="addNewTodo"
       />
     </div>
     <div>
-      <Todoslist :todos="todos" />
+      <Todoslist :todos="todos" :displayState="displayState" />
     </div>
 
     <div v-if="todos.length > 0">
       <div v-if="todos.length > 1" class="todo-buttons-changes">
         <TodoButton
           :buttonName="'Mark All Completed'"
-          @handle-click="markAllCompleted"
+          :buttonHoverColor="'green'"
+          @click="markAllCompleted"
         />
-        <TodoButton :buttonName="'Delete All'" @handle-click="deleteAll" />
+        <TodoButton
+          :buttonName="'Delete All'"
+          :buttonHoverColor="'red'"
+          @click="deleteAll"
+        />
         <TodoButton
           :buttonName="'Clear Completed'"
-          @handle-click="clearAllCompleted"
+          :buttonHoverColor="'orange'"
+          @click="clearAllCompleted"
         />
       </div>
 
       <div class="todo-buttons-display">
-        <TodoButton :buttonName="'Show All'" @click="showAll" />
-        <TodoButton :buttonName="'Show Active'" @click="showActive" />
-        <TodoButton :buttonName="'Show Completed'" @click="showCompleted" />
+        <TodoButton
+          :buttonName="'Show All'"
+          :buttonHoverColor="'blue'"
+          @click="showAll"
+        />
+        <TodoButton
+          :buttonName="'Show Active'"
+          :buttonHoverColor="'blue'"
+          @click="showActive"
+        />
+        <TodoButton
+          :buttonName="'Show Completed'"
+          :buttonHoverColor="'blue'"
+          @click="showCompleted"
+        />
       </div>
     </div>
   </div>
@@ -57,27 +76,33 @@ export default {
     return {
       todo: "",
       todos: [],
+      displayState: "ALL",
     };
   },
   methods: {
     saveTodos() {
       localStorage.setItem("todos", JSON.stringify(this.todos));
+      this.displayState = "ALL";
     },
     addNewTodo() {
       if (this.todo.length === 0) {
         return;
       } else {
-        this.todos.push({
+        const addedTodo = {
           id: Date.now(),
           done: false,
           content: this.todo,
-        });
+        };
+        this.todos.push(addedTodo);
         this.saveTodos();
+
         this.$refs.todoInput.clearInput();
         this.todo = "";
       }
     },
     markAllCompleted() {
+      this.displayState = "ALL";
+
       const allDone = this.todos.every((todos) => todos.done);
       this.todos.forEach((todos) => {
         todos.done = !allDone;
@@ -89,6 +114,8 @@ export default {
       this.saveTodos();
     },
     clearAllCompleted() {
+      this.displayState = "ALL";
+
       for (let i = this.todos.length - 1; i >= 0; i--) {
         if (this.todos[i].done == true) {
           this.todos.splice(i, 1);
@@ -98,29 +125,20 @@ export default {
     },
 
     showAll() {
-      const showAll = localStorage.getItem("todos");
-      this.todos = JSON.parse(showAll);
+      this.displayState = "ALL";
     },
     showActive() {
-      const showActive = localStorage.getItem("todos");
-      this.todos = JSON.parse(showActive);
-      const activetodos = this.todos.filter((todo) => !todo.done);
-      if (activetodos.length == 0) {
-        window.alert("NO ACTIVE TODOS");
-      } else {
-        this.todos = activetodos;
-      }
+      this.displayState = "ACTIVE";
     },
     showCompleted() {
-      const showCompleted = localStorage.getItem("todos");
-      this.todos = JSON.parse(showCompleted);
-      const completedtodos = this.todos.filter((todo) => todo.done);
-      if (completedtodos.length == 0) {
-        window.alert("NO COMPLETED TODOS");
-      } else {
-        this.todos = completedtodos;
-      }
+      this.displayState = "COMPLETED";
     },
+  },
+  mounted() {
+    const savedTodos = localStorage.getItem("todos");
+    if (savedTodos) {
+      this.todos = JSON.parse(savedTodos);
+    }
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <button @click="toggleButton" :class="{ active: isActive }">
+  <button @click="toggleButton" :class="buttonHoverColor">
     {{ buttonName }}
   </button>
 </template>
@@ -11,22 +11,9 @@ export default {
       type: String,
       default: "",
     },
-    focusActive: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      isActive: false,
-    };
-  },
-  methods: {
-    toggleButton() {
-      this.$emit("handle-click");
-      if (this.focusActive) {
-        this.isActive = !this.isActive;
-      }
+    buttonHoverColor: {
+      type: String,
+      default: "",
     },
   },
 };
@@ -40,11 +27,23 @@ button {
   background-color: white;
   padding: 10px;
 }
-button:hover {
-  color: white;
-  background-color: #2c3e50;
+.green:hover {
+  color: #2c3e50;
+  background-color: #00ca4e;
 }
-.active {
+.red:hover {
+  color: #2c3e50;
+  background-color: #ff605c;
+}
+.orange:hover {
+  color: #2c3e50;
+  background-color: #ffbd44;
+}
+.blue:hover {
+  color: #2c3e50;
+  background-color: #2a75ff;
+}
+button:hover {
   color: white;
   background-color: #2c3e50;
 }
