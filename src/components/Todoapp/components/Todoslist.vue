@@ -34,6 +34,11 @@ import TodoButton from "../../../UI/components/TodoButton.vue";
 import TodoInput from "../../../UI/components/TodoInput.vue";
 
 export default {
+  data() {
+    return {
+      displayTodos: [],
+    };
+  },
   components: {
     TodoButton,
     TodoInput,
@@ -71,6 +76,9 @@ export default {
     reversedTodos() {
       return this.todos.slice().reverse();
     },
+  },
+  mounted() {
+    this.displayTodos = JSON.parse(localStorage.getItem("todos"));
   },
 };
 </script>

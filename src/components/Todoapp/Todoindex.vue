@@ -18,7 +18,7 @@
       />
     </div>
     <div>
-      <Todoslist :todos="todos" />
+      <Todoslist :todos="displayTodos" />
     </div>
 
     <div v-if="todos.length > 0">
@@ -76,6 +76,7 @@ export default {
     return {
       todo: "",
       todos: [],
+      displayTodos: [],
     };
   },
   methods: {
@@ -86,12 +87,14 @@ export default {
       if (this.todo.length === 0) {
         return;
       } else {
-        this.todos.push({
+        const addedTodo = {
           id: Date.now(),
           done: false,
           content: this.todo,
-        });
+        };
+        this.todos.push(addedTodo);
         this.saveTodos();
+        this.displayTodos.push(addedTodo);
         this.$refs.todoInput.clearInput();
         this.todo = "";
       }
@@ -102,9 +105,14 @@ export default {
         todos.done = !allDone;
         this.saveTodos();
       });
+      const displayallDone = this.displayTodos.every((todos) => todos.done);
+      this.displayTodos.forEach((todos) => {
+        todos.done = !allDone;
+      });
     },
     deleteAll() {
       this.todos = [];
+      this.displayTodos = [];
       this.saveTodos();
     },
     clearAllCompleted() {
@@ -114,11 +122,16 @@ export default {
           this.saveTodos();
         }
       }
+      for (let i = this.displayTodos.length - 1; i >= 0; i--) {
+        if (this.displayTodos[i].done == true) {
+          this.displayTodos.splice(i, 1);
+        }
+      }
     },
 
     showAll() {
       const showAll = localStorage.getItem("todos");
-      this.todos = JSON.parse(showAll);
+      this.displayTodos = JSON.parse(showAll);
     },
     showActive() {
       const showActive = localStorage.getItem("todos");
@@ -127,7 +140,7 @@ export default {
       if (activetodos.length == 0) {
         window.alert("NO ACTIVE TODOS");
       } else {
-        this.todos = activetodos;
+        this.displayTodos = activetodos;
       }
     },
     showCompleted() {
@@ -137,9 +150,16 @@ export default {
       if (completedtodos.length == 0) {
         window.alert("NO COMPLETED TODOS");
       } else {
-        this.todos = completedtodos;
+        this.displayTodos = completedtodos;
       }
     },
+  },
+  mounted() {
+    const savedTodos = localStorage.getItem("todos");
+    if (savedTodos) {
+      this.displayTodos = JSON.parse(savedTodos);
+      this.todos = JSON.parse(savedTodos);
+    }
   },
 };
 </script>
